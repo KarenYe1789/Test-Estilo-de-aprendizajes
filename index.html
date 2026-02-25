@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Estilos de Aprendizaje - VAK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; p: 0; }
+            .print-container { shadow: none; border: none; width: 100%; max-width: 100%; }
+            .page-break { page-break-before: always; }
+            table { font-size: 10pt; }
+            .bg-indigo-600 { background-color: #4f46e5 !important; -webkit-print-color-adjust: exact; }
+            .bg-slate-100 { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; }
+        }
+        
+        /* Estilos para que la tabla parezca tarjetas en móvil */
+        @media (max-width: 768px) {
+            thead { display: none; }
+            tr { 
+                display: block; 
+                margin-bottom: 1.5rem; 
+                border: 1px solid #e2e8f0; 
+                border-radius: 1rem; 
+                background: #f8fafc;
+                padding: 1rem;
+            }
+            td { 
+                display: flex; 
+                flex-direction: column; 
+                border: none !important; 
+                padding: 0.5rem 0 !important;
+            }
+            td:first-child {
+                font-weight: 800;
+                font-size: 1.1rem;
+                color: #1e293b;
+                border-bottom: 1px solid #e2e8f0 !important;
+                margin-bottom: 1rem;
+                padding-bottom: 1rem !important;
+            }
+            .mobile-label {
+                display: block;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                color: #64748b;
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+            }
+        }
+        
+        .btn-val {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-selected {
+            background-color: #4f46e5 !important;
+            color: white !important;
+            border-color: #4f46e5 !important;
+            transform: scale(1.15);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4);
+            z-index: 10;
+        }
+
+        /* Ajuste de toques en móvil */
+        .touch-target {
+            min-height: 44px;
+            min-width: 44px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen md:py-8 md:px-4">
+    <div class="max-w-5xl mx-auto bg-white md:rounded-2xl shadow-xl overflow-hidden print-container">
+        <!-- Encabezado -->
+        <div class="bg-indigo-600 p-6 md:p-8 text-white text-center">
+            <h1 class="text-2xl md:text-3xl font-extrabold uppercase tracking-tight">Evaluación de Aprendizaje</h1>
+            <p class="mt-1 text-indigo-100 opacity-90 text-sm md:text-base no-print">Modelo VAK (Visual, Auditivo, Kinestésico)</p>
+            <div class="hidden print:block mt-4 text-left border-t border-indigo-400 pt-4">
+                <p><strong>Nombre:</strong> _________________________________ <strong>Fecha:</strong> ___________</p>
+            </div>
+        </div>
+
+        <div class="p-5 md:p-8">
+            <!-- Instrucciones Compactas en Móvil -->
+            <div class="mb-6 grid md:grid-cols-2 gap-4 md:gap-8 items-start border-b pb-6">
+                <div class="text-sm md:text-base">
+                    <h2 class="text-lg font-bold text-gray-800 mb-2">¿Cómo llenar el test?</h2>
+                    <p class="text-gray-600">
+                        En cada pregunta, califica las 3 opciones (1 al 3) según tu preferencia.
+                    </p>
+                    <div class="flex flex-wrap gap-3 mt-3">
+                        <span class="px-2 py-1 bg-indigo-100 text-indigo-700 rounded-md text-xs font-bold">3: Mucho</span>
+                        <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded-md text-xs font-bold">2: Algo</span>
+                        <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded-md text-xs font-bold">1: Poco</span>
+                    </div>
+                    <p class="mt-3 text-xs font-bold text-red-500 uppercase no-print">No repitas números en la misma pregunta.</p>
+                </div>
+                <div class="no-print">
+                    <button onclick="window.print()" class="hidden md:flex w-full bg-white border border-slate-200 py-3 px-4 rounded-xl font-bold text-slate-700 hover:bg-slate-50 items-center justify-center gap-2 shadow-sm transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        </svg>
+                        Guardar como PDF / Imprimir
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabla / Tarjetas -->
+            <div class="overflow-hidden">
+                <table class="w-full border-collapse">
+                    <thead class="hidden md:table-header-group">
+                        <tr class="bg-slate-100 text-slate-600 uppercase text-xs font-bold tracking-widest">
+                            <th class="border p-4 text-left">Situación</th>
+                            <th class="border p-4 text-center">Auditivo</th>
+                            <th class="border p-4 text-center">Visual</th>
+                            <th class="border p-4 text-center">Kinestésico</th>
+                        </tr>
+                    </thead>
+                    <tbody id="testBody">
+                        <!-- Generado por JS -->
+                    </tbody>
+                    <tfoot class="no-print">
+                        <tr class="md:table-row flex flex-col bg-indigo-50 border-t-2 border-indigo-200 mt-4 md:mt-0">
+                            <td class="border p-4 md:p-5 uppercase font-black text-indigo-900 text-sm md:text-base">Totales:</td>
+                            <td class="border p-3 md:p-5 text-center flex justify-between md:table-cell">
+                                <span class="md:hidden font-bold text-slate-500">Auditivo:</span>
+                                <span id="totalA" class="font-black text-xl text-indigo-700">0</span>
+                            </td>
+                            <td class="border p-3 md:p-5 text-center flex justify-between md:table-cell">
+                                <span class="md:hidden font-bold text-slate-500">Visual:</span>
+                                <span id="totalV" class="font-black text-xl text-indigo-700">0</span>
+                            </td>
+                            <td class="border p-3 md:p-5 text-center flex justify-between md:table-cell">
+                                <span class="md:hidden font-bold text-slate-500">Kinestésico:</span>
+                                <span id="totalK" class="font-black text-xl text-indigo-700">0</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- Resultados -->
+            <div id="resultCard" class="mt-8 p-6 md:p-8 rounded-2xl hidden no-print animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                    <div id="iconResult" class="p-4 bg-white/20 rounded-2xl backdrop-blur-md shadow-inner flex-shrink-0"></div>
+                    <div class="w-full text-center md:text-left">
+                        <div class="flex flex-col md:flex-row md:justify-between items-center gap-2 mb-4">
+                            <h3 class="text-2xl font-black" id="resTitle"></h3>
+                            <span id="resScore" class="bg-black/20 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest border border-white/20"></span>
+                        </div>
+                        <p class="text-base md:text-lg opacity-90 leading-relaxed mb-6" id="resDesc"></p>
+                        
+                        <div class="bg-white/10 rounded-2xl p-4 md:p-6 text-left">
+                            <h4 class="font-bold mb-4 flex items-center gap-2 text-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" /></svg>
+                                Tips para tu aprendizaje:
+                            </h4>
+                            <ul id="resTips" class="grid sm:grid-cols-2 gap-3 text-sm md:text-base list-none">
+                                <!-- Generado por JS -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="hidden print:block mt-6 text-xs text-slate-400 italic">Test VAK - Herramienta de Capacitación</p>
+        </div>
+    </div>
+
+    <script>
+        const items = [
+            { q: "En momentos de relax, prefiero...", opts: ["Escuchar música", "Ver TV o leer", "Jugar o hacer algo"] },
+            { q: "Para deletrear una palabra nueva...", opts: ["La pronuncio", "La imagino", "La escribo"] },
+            { q: "En mis sueños usualmente...", opts: ["Hay sonidos", "Hay imágenes", "Hay sensaciones"] },
+            { q: "Al conocer gente, recuerdo...", opts: ["Su voz", "Su cara", "Lo que hicimos"] },
+            { q: "Para resolver un problema...", opts: ["Lo hablo", "Lo analizo visualmente", "Me muevo o actúo"] },
+            { q: "Al aprender, prefiero...", opts: ["Oír al instructor", "Ver diapositivas", "Hacer prácticas"] },
+            { q: "Mi frase favorita es...", opts: ["\"Te escucho\"", "\"Ya veo\"", "\"Lo capto\""] },
+            { q: "Para seguir instrucciones...", opts: ["Las oigo", "Las leo", "Busco un ejemplo"] }
+        ];
+
+        let scores = Array(items.length).fill(null).map(() => [0, 0, 0]);
+
+        function render() {
+            const body = document.getElementById('testBody');
+            body.innerHTML = items.map((item, rIdx) => `
+                <tr class="md:hover:bg-slate-50 transition-colors">
+                    <td class="border p-4 font-bold md:font-medium text-slate-800 md:bg-slate-50/50">${rIdx + 1}. ${item.q}</td>
+                    ${item.opts.map((opt, cIdx) => `
+                        <td class="border p-2 md:p-4">
+                            <span class="mobile-label md:hidden">${opt}</span>
+                            <div class="hidden print:block text-center border-b border-slate-300 w-full h-6 mb-2"></div>
+                            <div class="flex justify-center md:justify-center gap-3 no-print">
+                                ${[1, 2, 3].map(v => `
+                                    <button onclick="setVal(${rIdx}, ${cIdx}, ${v})" 
+                                        class="touch-target flex-1 md:flex-none md:w-10 md:h-10 rounded-xl border-2 text-sm font-black transition-all
+                                        ${scores[rIdx][cIdx] === v ? 'btn-selected border-indigo-600 bg-indigo-600 text-white' : 'bg-white text-slate-400 border-slate-100 hover:border-indigo-200'}">
+                                        ${v}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </td>
+                    `).join('')}
+                </tr>
+            `).join('');
+        }
+
+        function setVal(r, c, v) {
+            const row = scores[r];
+            const oldIdx = row.indexOf(v);
+            if (oldIdx !== -1 && oldIdx !== c) row[oldIdx] = 0;
+            row[c] = (row[c] === v) ? 0 : v;
+            render();
+            update();
+        }
+
+        function update() {
+            let a = 0, v = 0, k = 0;
+            scores.forEach(r => { a += r[0]; v += r[1]; k += r[2]; });
+            
+            document.getElementById('totalA').innerText = a;
+            document.getElementById('totalV').innerText = v;
+            document.getElementById('totalK').innerText = k;
+
+            const complete = scores.every(r => r.includes(1) && r.includes(2) && r.includes(3));
+            if (complete) {
+                const max = Math.max(a, v, k);
+                if (max === a) show("Auditivo", "Tu fuerte es el oído. Procesas información mediante sonidos y explicaciones habladas.", "bg-blue-600", "👂", a, [
+                    "Graba las sesiones para repasar.",
+                    "Explica los temas en voz alta.",
+                    "Debate con otros compañeros.",
+                    "Usa rimas para memorizar."
+                ]);
+                else if (max === v) show("Visual", "Tu fuerte es la vista. Necesitas ver imágenes, colores y textos para entender.", "bg-emerald-600", "👁️", v, [
+                    "Usa colores en tus notas.",
+                    "Dibuja mapas mentales.",
+                    "Mira tutoriales en video.",
+                    "Subraya lo más importante."
+                ]);
+                else show("Kinestésico", "Tu fuerte es la acción. Aprendes moviéndote y tocando las herramientas.", "bg-orange-600", "👋", k, [
+                    "Aprende haciendo la tarea.",
+                    "Toma descansos con movimiento.",
+                    "Usa objetos reales para practicar.",
+                    "Camina mientras repasas."
+                ]);
+            } else {
+                document.getElementById('resultCard').classList.add('hidden');
+            }
+        }
+
+        function show(title, desc, color, icon, score, tips) {
+            const card = document.getElementById('resultCard');
+            card.className = `mt-8 p-6 md:p-8 rounded-3xl no-print text-white shadow-2xl ${color} flex flex-col md:flex-row`;
+            card.classList.remove('hidden');
+            document.getElementById('resTitle').innerText = title;
+            document.getElementById('resScore').innerText = `${score} PUNTOS`;
+            document.getElementById('resDesc').innerText = desc;
+            document.getElementById('iconResult').innerHTML = `<span class="text-5xl">${icon}</span>`;
+            document.getElementById('resTips').innerHTML = tips.map(tip => `<li class="flex items-center gap-2 bg-white/10 p-2 rounded-lg"><span class="text-lg">✓</span> ${tip}</li>`).join('');
+            
+            // Auto-scroll al resultado en móvil
+            if (window.innerWidth < 768) {
+                card.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        render();
+    </script>
+</body>
+</html>
