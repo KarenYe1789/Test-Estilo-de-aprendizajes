@@ -63,7 +63,6 @@
             min-width: 44px;
         }
 
-        /* Estilo para la captura de imagen */
         #captureArea {
             padding: 20px;
             border-radius: 20px;
@@ -72,10 +71,18 @@
 </head>
 <body class="bg-slate-50 min-h-screen md:py-8 md:px-4">
     <div class="max-w-5xl mx-auto bg-white md:rounded-2xl shadow-xl overflow-hidden print-container">
-        <!-- Encabezado -->
+        <!-- Encabezado con Escala de Puntaje -->
         <div class="bg-indigo-600 p-6 md:p-8 text-white text-center">
-            <h1 class="text-2xl md:text-3xl font-extrabold uppercase tracking-tight">Evaluación de Aprendizaje</h1>
-            <p class="mt-1 text-indigo-100 opacity-90 text-sm md:text-base no-print">Modelo VAK</p>
+            <h1 class="text-2xl md:text-3xl font-extrabold uppercase tracking-tight">Evaluación del Estilo de Aprendizaje</h1>
+            <p class="mt-1 text-indigo-100 opacity-90 text-sm md:text-base no-print">Modelo VAK (Visual, Auditivo, Kinestésico)</p>
+            
+            <!-- Escala de Valores Reincorporada -->
+            <div class="mt-4 flex flex-wrap justify-center gap-3 no-print">
+                <span class="bg-white/20 px-3 py-1 rounded-full text-xs font-bold border border-white/30">3: Más preferido</span>
+                <span class="bg-white/20 px-3 py-1 rounded-full text-xs font-bold border border-white/30">2: Preferido</span>
+                <span class="bg-white/20 px-3 py-1 rounded-full text-xs font-bold border border-white/30">1: Menos preferido</span>
+            </div>
+
             <div class="hidden print:block mt-4 text-left border-t border-indigo-400 pt-4">
                 <p><strong>Nombre:</strong> _________________________________</p>
             </div>
@@ -84,10 +91,10 @@
         <div class="p-5 md:p-8">
             <!-- Instrucciones -->
             <div class="mb-6 border-b pb-6 no-print">
-                <h2 class="text-lg font-bold text-gray-800 mb-2">Instrucciones:</h2>
+                <h2 class="text-lg font-bold text-gray-800 mb-2">Indicaciones:</h2>
                 <p class="text-gray-600 text-sm">
-                    Califica las 3 opciones (1 al 3) según tu preferencia. 
-                    <span class="text-indigo-600 font-bold">No repitas números en la misma fila.</span>
+                    Observar cada una de las indicaciones citadas a continuación. En cada columna, responde utilizando la escala anterior (3, 2, 1). 
+                    <span class="text-indigo-600 font-bold block mt-1">Recuerda: No repitas números en la misma fila.</span>
                 </p>
             </div>
 
@@ -96,7 +103,7 @@
                 <table class="w-full border-collapse">
                     <thead class="hidden md:table-header-group">
                         <tr class="bg-slate-100 text-slate-600 uppercase text-xs font-bold tracking-widest">
-                            <th class="border p-4 text-left">Situación</th>
+                            <th class="border p-4 text-left w-1/4">Situación</th>
                             <th class="border p-4 text-center">Auditivo</th>
                             <th class="border p-4 text-center">Visual</th>
                             <th class="border p-4 text-center">Kinestésico</th>
@@ -116,7 +123,6 @@
 
             <!-- RESULTADOS Y CAPTURA -->
             <div id="resultContainer" class="hidden no-print">
-                <!-- Este es el área que se convertirá en imagen -->
                 <div id="captureArea" class="mt-8 rounded-3xl text-white shadow-2xl transition-all duration-500">
                     <div class="flex flex-col md:flex-row items-center gap-6 p-4">
                         <div id="iconResult" class="p-4 bg-white/20 rounded-2xl shadow-inner"></div>
@@ -127,15 +133,13 @@
                             </div>
                             <p class="text-sm md:text-base opacity-90 mb-4" id="resDesc"></p>
                             <div class="bg-white/10 rounded-2xl p-4 text-left">
-                                <h4 class="font-bold mb-2 flex items-center gap-2">Tips clave:</h4>
+                                <h4 class="font-bold mb-2 flex items-center gap-2">Tips para potenciar tu estilo:</h4>
                                 <ul id="resTips" class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm list-none"></ul>
                             </div>
                         </div>
                     </div>
-                    <div class="text-center pb-2 pt-4 opacity-50 text-[10px] uppercase tracking-widest">Generado en Capacitación VAK</div>
                 </div>
 
-                <!-- Botones de Acción -->
                 <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <button onclick="downloadImage()" class="flex items-center justify-center gap-2 bg-emerald-600 text-white p-4 rounded-xl font-bold hover:bg-emerald-700 transition-all shadow-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -151,21 +155,20 @@
                     </button>
                 </div>
             </div>
-            
-            <p class="hidden print:block mt-6 text-xs text-slate-400 italic">Test VAK - Resultados de Evaluación</p>
         </div>
     </div>
 
     <script>
+        // Datos actualizados según la imagen proporcionada
         const items = [
-            { q: "En momentos de relax, prefiero...", opts: ["Escuchar música", "Ver TV o leer", "Jugar o hacer algo"] },
-            { q: "Para deletrear una palabra nueva...", opts: ["La pronuncio", "La imagino", "La escribo"] },
-            { q: "En mis sueños usualmente...", opts: ["Hay sonidos", "Hay imágenes", "Hay sensaciones"] },
-            { q: "Al conocer gente, recuerdo...", opts: ["Su voz", "Su cara", "Lo que hicimos"] },
-            { q: "Para resolver un problema...", opts: ["Lo hablo", "Lo analizo visualmente", "Me muevo o actúo"] },
-            { q: "Al aprender, prefiero...", opts: ["Oír al instructor", "Ver diapositivas", "Hacer prácticas"] },
-            { q: "Mi frase favorita es...", opts: ["\"Te escucho\"", "\"Ya veo\"", "\"Lo capto\""] },
-            { q: "Para seguir instrucciones...", opts: ["Las oigo", "Las leo", "Busco un ejemplo"] }
+            { q: "En momentos de relax, prefiero...", opts: ["escuchar música", "leer, mirar televisión", "participar de un juego"] },
+            { q: "Para deletrear una palabra poco familiar, la...", opts: ["pronuncio", "dibujo", "escribo"] },
+            { q: "En mis sueños...", opts: ["escucho sonidos", "veo imágenes", "teatralizo situaciones"] },
+            { q: "Cuando conozco personas, recuerdo...", opts: ["el sonido de su voz", "su rostro", "lo que han hecho"] },
+            { q: "Para resolver un problema...", opts: ["converso", "lo analizo", "camino y le encuentro solución"] },
+            { q: "Al aprender, prefiero...", opts: ["obtener instrucciones verbales", "leer instrucciones o ver imágenes", "hacerlo"] },
+            { q: "Es más probable que diga...", opts: ["\"Le escucho\"", "\"Veo lo que está diciendo\"", "\"Entiendo\""] },
+            { q: "Para recibir instrucciones, prefiero...", opts: ["escucharlas", "ver las indicaciones", "obtener puntos de referencia"] }
         ];
 
         let scores = Array(items.length).fill(null).map(() => [0, 0, 0]);
@@ -173,11 +176,12 @@
         function render() {
             const body = document.getElementById('testBody');
             body.innerHTML = items.map((item, rIdx) => `
-                <tr>
-                    <td class="border p-4 font-bold text-slate-800">${rIdx + 1}. ${item.q}</td>
+                <tr class="transition-colors hover:bg-slate-50">
+                    <td class="border p-4 font-bold text-slate-800 bg-slate-50/30">${rIdx + 1}. ${item.q}</td>
                     ${item.opts.map((opt, cIdx) => `
                         <td class="border p-2 md:p-4">
                             <span class="mobile-label md:hidden">${opt}</span>
+                            <p class="hidden md:block text-xs text-slate-500 mb-2 italic text-center">${opt}</p>
                             <div class="flex justify-center gap-2 no-print">
                                 ${[1, 2, 3].map(v => `
                                     <button onclick="setVal(${rIdx}, ${cIdx}, ${v})" 
@@ -215,9 +219,9 @@
                 const container = document.getElementById('resultContainer');
                 container.classList.remove('hidden');
                 
-                if (max === a) show("Auditivo", "Aprendes mejor escuchando.", "bg-blue-600", "👂", a, ["Graba clases.", "Estudia en voz alta.", "Participa en debates."]);
-                else if (max === v) show("Visual", "Aprendes mejor viendo.", "bg-emerald-600", "👁️", v, ["Usa colores.", "Haz mapas mentales.", "Mira tutoriales."]);
-                else show("Kinestésico", "Aprendes mejor haciendo.", "bg-orange-600", "👋", k, ["Practica lo aprendido.", "Toma descansos cortos.", "Usa objetos reales."]);
+                if (max === a) show("Auditivo", "Aprendes mejor mediante sonidos y explicaciones verbales.", "bg-blue-600", "👂", a, ["Escucha grabaciones.", "Estudia en voz alta.", "Participa en debates."]);
+                else if (max === v) show("Visual", "Aprendes mejor mediante imágenes, lecturas y gráficos.", "bg-emerald-600", "👁️", v, ["Usa diagramas.", "Haz mapas conceptuales.", "Mira tutoriales."]);
+                else show("Kinestésico", "Aprendes mejor mediante la práctica, el movimiento y el tacto.", "bg-orange-600", "👋", k, ["Haz simulacros.", "Toma descansos con estiramiento.", "Aprende haciendo."]);
             }
         }
 
@@ -225,19 +229,15 @@
             const area = document.getElementById('captureArea');
             area.className = `mt-8 rounded-3xl text-white shadow-2xl ${color}`;
             document.getElementById('resTitle').innerText = title;
-            document.getElementById('resScore').innerText = `${score} PTS`;
+            document.getElementById('resScore').innerText = `${score} PTS TOTALES`;
             document.getElementById('resDesc').innerText = desc;
             document.getElementById('iconResult').innerHTML = `<span class="text-5xl">${icon}</span>`;
-            document.getElementById('resTips').innerHTML = tips.map(tip => `<li class="bg-white/10 p-2 rounded-lg">✓ ${tip}</li>`).join('');
+            document.getElementById('resTips').innerHTML = tips.map(tip => `<li class="bg-white/10 p-2 rounded-lg flex items-center gap-2"><span>✔</span> ${tip}</li>`).join('');
         }
 
-        // FUNCIÓN CLAVE: Convierte el HTML en Imagen PNG
         function downloadImage() {
             const element = document.getElementById('captureArea');
-            html2canvas(element, { 
-                backgroundColor: null,
-                scale: 2 // Mayor calidad
-            }).then(canvas => {
+            html2canvas(element, { backgroundColor: null, scale: 2 }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'mi-estilo-aprendizaje.png';
                 link.href = canvas.toDataURL('image/png');
